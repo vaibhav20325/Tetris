@@ -1,5 +1,5 @@
 
-def new_piece(file_name,x,y,inverse=[False, False, False]):
+def new_piece(file_name,x,y,orient=0,inverse=[False, False, False]):
     #inverse=(x_inv, y_inv, rot_inv)
     list=[]
     f=open('pieces\\'+ file_name+'.txt','r')
