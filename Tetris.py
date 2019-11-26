@@ -17,7 +17,7 @@ HEIGHT = 20
 MARGIN = 2
 
 pygame.init()
-WINDOW_SIZE = [300, 530]
+WINDOW_SIZE = [340, 530]
 winlogo=pygame.image.load(".\winlogo.png")
 pygame.display.set_icon(winlogo)
 clock = pygame.time.Clock()
@@ -32,7 +32,9 @@ fps=10
 n_r=25
 n_c=12
 
-
+pieces_order=[]
+for i in range(10):
+	pieces_order.append(random.randint(1,7))
 
 m=[]
 
@@ -48,6 +50,14 @@ new_m=[]
 new_m=copy.deepcopy(m)
 
 
+next_block=[]
+for n_rows in range(3):
+		row_temp=[]
+		for n_col in range(3):
+			row_temp.append(0)
+		next_block.append(row_temp)
+next_block_blank=copy.deepcopy(next_block)
+
 def display(l):
 	global fps
 	screen.fill(GREY)
@@ -60,9 +70,16 @@ def display(l):
 			if i != 0:
 				color=colors[i-1]
 			pygame.draw.rect(screen,color,[(MARGIN + WIDTH)*(column)+MARGIN,(MARGIN + HEIGHT)*row+MARGIN,WIDTH,HEIGHT])
-
+	for row in range(0,3):
+		for column in range(0,3):
+			color = BLACK
+			i=next_block[row][column]
+			if i != 0:
+				color=colors[i-1]
+			pygame.draw.rect(screen,color,[270+(11)*(column),200+(11)*row+MARGIN,10,10])
 	clock.tick(fps) 
 	pygame.display.flip()
+
 
 def preset(tupl,l,n=1):
 	for i in tupl:
@@ -74,25 +91,30 @@ def preset(tupl,l,n=1):
 		l[i[0]][i[1]]=n
 					
 def piece(point, num, orient,color):
-	d=module.new_piece(str(num),point[1],point[0])
+	d=module.new_piece(str(num),point[1],point[0],orient)
 	a=preset(d,new_m,color)
 	if a == -1:
 		return -1
 
 def event1():
-	global new_m,m,fps
+	global new_m,m,fps, next_block
+	next_block=copy.deepcopy(next_block_blank)
+	orient=0
 	fps=10
-	num=random.randint(1,7)
+	num=pieces_order.pop(0)
+	pieces_order.append(random.randint(1,7))
 	running=True
 	p=[-1,5]
 	if m[0][5]!=0 or m[0][6]!=0:
 		running=False
 	c=random.randint(1,len(colors))
+	preset(module.new_piece(str(pieces_order[0]),1,1),next_block,5)
 	while running:
+		
 		new_m=copy.deepcopy(m)
 		p[0]+=1
 		
-		a = piece(p,num,0,c)
+		a = piece(p,num,orient,c)
 		if a == -1:
 			p[0]-=1
 			a=piece(p,num,0,c)
@@ -105,6 +127,10 @@ def event1():
 		keystate = pygame.key.get_pressed()
 		if keystate[pygame.K_DOWN]:
 			fps=30
+		if keystate[pygame.K_UP]:
+			oreint+=1
+			if oreint>3:
+				orient-=4
 		'''
 		if keystate[pygame.K_RIGHT] and p[1]<n_c-1:
 			if new_m[p[0]+1][p[1]+2]==0:
@@ -124,6 +150,7 @@ def event1():
 				if event.key == pygame.K_LEFT and p[1]>0:
 					if new_m[p[0]+1][p[1]-2]==0:
 						p[1]-=1
+
 
 
 def main():    
