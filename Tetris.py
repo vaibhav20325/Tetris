@@ -84,8 +84,8 @@ def event1():
 	fps=10
 	num=random.randint(1,7)
 	running=True
-	p=[-1,4]
-	if m[0][4]!=0 or m[0][5]!=0:
+	p=[-1,5]
+	if m[0][5]!=0 or m[0][6]!=0:
 		running=False
 	c=random.randint(1,len(colors))
 	while running:
