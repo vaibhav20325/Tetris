@@ -17,7 +17,7 @@ HEIGHT = 20
 MARGIN = 2
 
 pygame.init()
-WINDOW_SIZE = [340, 530]
+WINDOW_SIZE = [400, 590]
 winlogo=pygame.image.load(".\winlogo.png")
 pygame.display.set_icon(winlogo)
 clock = pygame.time.Clock()
@@ -29,8 +29,8 @@ screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("TETRIS")
 
 fps=10
-n_r=25
-n_c=12
+n_r=28
+n_c=15
 
 pieces_order=[]
 for i in range(10):
@@ -49,6 +49,7 @@ m.append([1]*(n_c+1))
 new_m=[]
 new_m=copy.deepcopy(m)
 
+orient=0
 
 next_block=[]
 for n_rows in range(3):
@@ -76,7 +77,7 @@ def display(l):
 			i=next_block[row][column]
 			if i != 0:
 				color=colors[i-1]
-			pygame.draw.rect(screen,color,[270+(11)*(column),200+(11)*row+MARGIN,10,10])
+			pygame.draw.rect(screen,color,[350+(11)*(column),200+(11)*row+MARGIN,10,10])
 	clock.tick(fps) 
 	pygame.display.flip()
 
@@ -97,7 +98,7 @@ def piece(point, num, orient,color):
 		return -1
 
 def event1():
-	global new_m,m,fps, next_block
+	global new_m,m,fps, next_block,orient
 	next_block=copy.deepcopy(next_block_blank)
 	orient=0
 	fps=10
@@ -108,7 +109,7 @@ def event1():
 	if m[0][5]!=0 or m[0][6]!=0:
 		running=False
 	c=random.randint(1,len(colors))
-	preset(module.new_piece(str(pieces_order[0]),1,1),next_block,5)
+	preset(module.new_piece(str(pieces_order[0]),1,1,0),next_block,5)
 	while running:
 		
 		new_m=copy.deepcopy(m)
@@ -117,7 +118,7 @@ def event1():
 		a = piece(p,num,orient,c)
 		if a == -1:
 			p[0]-=1
-			a=piece(p,num,0,c)
+			a=piece(p,num,orient,c)
 			m=copy.deepcopy(new_m)
 			break
 		display(new_m)
@@ -128,8 +129,8 @@ def event1():
 		if keystate[pygame.K_DOWN]:
 			fps=30
 		if keystate[pygame.K_UP]:
-			oreint+=1
-			if oreint>3:
+			orient+=1
+			if orient>3:
 				orient-=4
 		'''
 		if keystate[pygame.K_RIGHT] and p[1]<n_c-1:
@@ -163,5 +164,13 @@ def main():
 				running=False
 				quit()
 		event1()
+		
+		#Removing perfect Rows
+		for i in range(n_r-1):
+			if 0 not in m[i]:
+				m.pop(i)
+				m=[[0]*n_c+[1]]+m
+
+
 main()
 
