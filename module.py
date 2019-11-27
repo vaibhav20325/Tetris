@@ -1,8 +1,8 @@
 
-def new_piece(file_name,x,y,orient=0,inverse=[False, False, False]):
-    #inverse=(x_inv, y_inv, rot_inv)
+def new_piece(file_name,x,y,orient=0):
+
     list=[]
-    f=open('pieces\\'+ file_name+'.txt','r')
+    f=open('pieces\\'+file_name+'_'+str(orient)+'.txt','r')
     text=f.readlines()
     l=int(len(text[0].strip()))
     b=int(len(text))
@@ -15,11 +15,6 @@ def new_piece(file_name,x,y,orient=0,inverse=[False, False, False]):
     for i in range(b):
         for j in range(l):
             if text[i][j]=='*':
-                pos=[j-centre_x,i-centre_y]
-                if inverse[2]:
-                    pos=pos[::-1]
-                for k in [0,1]:
-                    if not(inverse[k]):
-                        pos[k]=-1*pos[k]
+                pos=[-j+centre_x,-i+centre_y]
                 list.append((y+pos[1],x+pos[0]))
     return(list)
