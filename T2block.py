@@ -191,23 +191,23 @@ def event1():
 			if event.type==pygame.QUIT:
 				quit()
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RIGHT and p1[1]<n_c-1 and a!=-1:
+				if event.key == pygame.K_d and p1[1]<n_c-1 and a!=-1:
 					if new_m[p1[0]+1][p1[1]+2]==0:
 						p1[1]+=1
-				if event.key == pygame.K_LEFT and p1[1]>0  and a!=-1:
+				if event.key == pygame.K_a and p1[1]>0  and a!=-1:
 					if new_m[p1[0]+1][p1[1]-2]==0:
 						p1[1]-=1
-				if event.key == pygame.K_d and p2[1]<n_c-1 and b!=-1:
+				if event.key == pygame.K_RIGHT and p2[1]<n_c-1 and b!=-1:
 					if new_m[p2[0]+1][p2[1]+2]==0:
 						p2[1]+=1
-				if event.key == pygame.K_a and p2[1]>0  and b!=-1:
+				if event.key == pygame.K_LEFT and p2[1]>0  and b!=-1:
 					if new_m[p2[0]+1][p2[1]-2]==0:
 						p2[1]-=1
-				if event.key == pygame.K_UP and a!=-1:
+				if event.key == pygame.K_w and a!=-1:
 					orient1+=1
 					if orient1>3:
 						orient1-=4
-				if event.key == pygame.K_w and b!=-1:
+				if event.key == pygame.K_UP and b!=-1:
 					orient2+=1
 					if orient2>3:
 						orient2-=4
