@@ -17,7 +17,7 @@ HEIGHT = 20
 MARGIN = 2
 
 pygame.init()
-WINDOW_SIZE = [400, 590]
+WINDOW_SIZE = [450, 590]
 winlogo=pygame.image.load(".\winlogo.png")
 pygame.display.set_icon(winlogo)
 clock = pygame.time.Clock()
@@ -28,7 +28,7 @@ font2 = pygame.font.SysFont('freesansbold.ttf', 16)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("TETRIS")
 
-fps=10
+fps=5
 n_r=28
 n_c=15
 
@@ -80,28 +80,28 @@ def display(l):
 	global fps
 	screen.fill(GREY)
 	#screen.blit(logo,(0,0))
-	
+	text = font2.render("Next Block", True, (255,255,255))
 	for row in range(0,n_r):
 		for column in range(0,n_c):
 			color = BLACK
 			i=l[row][column]
 			if i != 0:
 				color=colors[i-1]
-			pygame.draw.rect(screen,color,[(MARGIN + WIDTH)*(column)+MARGIN,(MARGIN + HEIGHT)*row+MARGIN,WIDTH,HEIGHT])
+			pygame.draw.rect(screen,color,[(MARGIN + WIDTH)*(column)+MARGIN + 50,(MARGIN + HEIGHT)*row+MARGIN,WIDTH,HEIGHT])
 	for row in range(0,3):
 		for column in range(0,3):
 			color = BLACK
 			i=next_block1[row][column]
 			if i != 0:
 				color=colors[i-1]
-			pygame.draw.rect(screen,color,[350+(11)*(column),200+(11)*row+MARGIN,10,10])
+			pygame.draw.rect(screen,color,[10+(11)*(column),200+(11)*row+MARGIN,10,10])
 	for row in range(0,3):
 		for column in range(0,3):
 			color = BLACK
 			i=next_block2[row][column]
 			if i != 0:
 				color=colors[i-1]
-			pygame.draw.rect(screen,color,[350+(11)*(column),300+(11)*row+MARGIN,10,10])
+			pygame.draw.rect(screen,color,[400+(11)*(column),200+(11)*row+MARGIN,10,10])
 	clock.tick(fps) 
 	pygame.display.flip()
 
@@ -177,7 +177,7 @@ def event1():
 		if p1[0]==n_r-1 and p2[0]==n_r-1:
 			break
 		keystate = pygame.key.get_pressed()
-		if keystate[pygame.K_DOWN]:
+		if keystate[pygame.K_DOWN] or keystate[pygame.K_s]:
 			fps=30
 		'''
 		if keystate[pygame.K_RIGHT] and p[1]<n_c-1:
