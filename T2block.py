@@ -3,6 +3,7 @@ import copy
 import pygame
 import random
 import module
+
 BLACK = (0, 0, 0)
 GREY=(20,20,20)
 WHITE = (255, 255, 255)
@@ -34,7 +35,7 @@ n_c=15
 
 a=0
 b=0
-
+lines=0
 pieces_order1=[]
 for i in range(10):
 	pieces_order1.append(random.randint(1,7))
@@ -215,20 +216,22 @@ def event1():
 		m=copy.deepcopy(new_m)
 
 def main():    
-	global m, fps
+	global m, fps,lines
 	display(m)
 	running=True
 	while running:
 		for event in pygame.event.get():
 			if event.type==pygame.QUIT:
 				running=False
-				quit()
+				pygame.quit()
+                #quit()
 		event1()
 		
 		#Removing perfect Rows
 		for i in range(n_r-1):
 			if 0 not in m[i]:
 				m.pop(i)
+                lines+=1
 				m=[[0]*n_c+[1]]+m
 
 
