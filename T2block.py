@@ -4,6 +4,7 @@ import pygame
 import random
 import module
 
+
 BLACK = (0, 0, 0)
 GREY=(20,20,20)
 WHITE = (255, 255, 255)
@@ -18,17 +19,19 @@ HEIGHT = 20
 MARGIN = 2
 
 pygame.init()
-WINDOW_SIZE = [450, 590]
+WINDOW_SIZE = [450, 593]
 winlogo=pygame.image.load(".\winlogo.png")
+#cover=pygame.transform.scale(pygame.image.load(".\cover.png"),(WINDOW_SIZE[0],WINDOW_SIZE[1]))
+cover=pygame.transform.scale(pygame.image.load(".\cover.png"),(450,593))
 pygame.display.set_icon(winlogo)
 clock = pygame.time.Clock()
 
 font1 = pygame.font.SysFont('freesansbold.ttf', 20)
-font2 = pygame.font.SysFont('freesansbold.ttf', 16)
+font2 = pygame.font.SysFont('freesansbold.ttf', 17)
 
 screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("TETRIS")
-
+score_b=0
 fps=5
 n_r=28
 n_c=15
@@ -78,17 +81,21 @@ for n_rows in range(3):
 next_block_blank=copy.deepcopy(next_block1)
 
 def display(l):
-	global fps
+	global fps,lines, score_b
 	screen.fill(GREY)
 	#screen.blit(logo,(0,0))
-	text = font2.render("Next Block", True, (255,255,255))
+	score=100*lines+score_b
+
+	text = font2.render("NEXT", True, (255,255,255))
+	line_text=font2.render("LINES:"+str(lines), True, (255,255,255))
+	score_text=font2.render("SCORE:"+str(score), True, (255,255,255))
 	for row in range(0,n_r):
 		for column in range(0,n_c):
 			color = BLACK
 			i=l[row][column]
 			if i != 0:
 				color=colors[i-1]
-			pygame.draw.rect(screen,color,[(MARGIN + WIDTH)*(column)+MARGIN + 50,(MARGIN + HEIGHT)*row+MARGIN,WIDTH,HEIGHT])
+			pygame.draw.rect(screen,color,[(MARGIN + WIDTH)*(column)+MARGIN + 53,(MARGIN + HEIGHT)*row+MARGIN,WIDTH,HEIGHT])
 	for row in range(0,3):
 		for column in range(0,3):
 			color = BLACK
@@ -103,6 +110,10 @@ def display(l):
 			if i != 0:
 				color=colors[i-1]
 			pygame.draw.rect(screen,color,[400+(11)*(column),200+(11)*row+MARGIN,10,10])
+	screen.blit(text,(10,180))
+	screen.blit(text,(400,180))
+	screen.blit(line_text,(385,100))
+	screen.blit(score_text,(385,80))
 	clock.tick(fps) 
 	pygame.display.flip()
 
@@ -123,7 +134,11 @@ def piece(point, num, orient,color):
 		return -1
 
 def event1():
-	global new_m,m,fps, next_block1,next_block2,orient,a,b
+	
+	global new_m,m,fps, next_block1,next_block2,orient,a,b,score_b
+
+	score_b+=10
+
 	next_block1=copy.deepcopy(next_block_blank)
 	next_block2=copy.deepcopy(next_block_blank)
 	orient1=0
@@ -217,6 +232,9 @@ def event1():
 
 def main():    
 	global m, fps,lines
+	screen.blit(cover,(0,0))
+	pygame.display.flip()
+	pygame.time.delay(2500)
 	display(m)
 	running=True
 	while running:
@@ -224,15 +242,16 @@ def main():
 			if event.type==pygame.QUIT:
 				running=False
 				pygame.quit()
-                #quit()
+				#quit()
 		event1()
 		
 		#Removing perfect Rows
 		for i in range(n_r-1):
 			if 0 not in m[i]:
 				m.pop(i)
-                lines+=1
+				lines+=1
 				m=[[0]*n_c+[1]]+m
 
 
 main()
+
