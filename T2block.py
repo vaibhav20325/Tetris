@@ -21,8 +21,7 @@ MARGIN = 2
 pygame.init()
 WINDOW_SIZE = [450, 593]
 winlogo=pygame.image.load(".\winlogo.png")
-#cover=pygame.transform.scale(pygame.image.load(".\cover.png"),(WINDOW_SIZE[0],WINDOW_SIZE[1]))
-cover=pygame.transform.scale(pygame.image.load(".\cover.png"),(450,593))
+cover=pygame.transform.scale(pygame.image.load(".\cover.png"),(WINDOW_SIZE[0],WINDOW_SIZE[1]))
 pygame.display.set_icon(winlogo)
 clock = pygame.time.Clock()
 
@@ -35,7 +34,7 @@ score_b=0
 fps=5
 n_r=28
 n_c=15
-
+''''
 a=0
 b=0
 lines=0
@@ -65,6 +64,8 @@ new_m=copy.deepcopy(m)
 orient1=0
 orient2=0
 next_block1=[]
+
+
 for n_rows in range(3):
 		row_temp=[]
 		for n_col in range(3):
@@ -79,7 +80,57 @@ for n_rows in range(3):
 		next_block2.append(row_temp)
 
 next_block_blank=copy.deepcopy(next_block1)
+'''
+def reset_game():
+	global m,new_m,next_block1,next_block2,next_block_blank, pieces_order1,pieces_order2, new_piece, orient1,orient2,a,b,lines,score_b
+	score_b=0
+	a=0
+	b=0
+	lines=0
+	pieces_order1=[]
+	for i in range(10):
+		pieces_order1.append(random.randint(1,7))
 
+	pieces_order2=[]
+	for i in range(10):
+		pieces_order2.append(random.randint(1,7))
+
+	m=[]
+
+	for n_rows in range(n_r-1):
+			row_temp=[]
+			for n_col in range(n_c):
+				row_temp.append(0)
+			row_temp.append(1)
+			m.append(row_temp)
+	m.append([1]*(n_c+1))
+	for i in range(20):
+		m.append([0]*(n_c+1))
+
+	new_m=[]
+	new_m=copy.deepcopy(m)
+
+	orient1=0
+	orient2=0
+	next_block1=[]
+
+
+	for n_rows in range(3):
+			row_temp=[]
+			for n_col in range(3):
+				row_temp.append(0)
+			next_block1.append(row_temp)
+
+	next_block2=[]
+	for n_rows in range(3):
+			row_temp=[]
+			for n_col in range(3):
+				row_temp.append(0)
+			next_block2.append(row_temp)
+
+	next_block_blank=copy.deepcopy(next_block1)
+
+reset_game()
 def display(l):
 	global fps,lines, score_b
 	screen.fill(GREY)
@@ -243,6 +294,13 @@ def main():
 				running=False
 				pygame.quit()
 				#quit()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					reset_game()
+					screen.blit(cover,(0,0))
+					pygame.display.flip()
+					pygame.time.delay(1500)
+					main()
 		event1()
 		
 		#Removing perfect Rows
@@ -254,4 +312,3 @@ def main():
 
 
 main()
-
